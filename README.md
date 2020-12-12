@@ -7,5 +7,5 @@ Program is still in development, in useable code form, but not in userfriendly s
 -Create UI
 
 ## Prerequisites
--WS: https://github.com/websockets/ws
+-WS: https://github.com/websockets/ws <br>
 -Chalk: https://github.com/chalk/chalk
