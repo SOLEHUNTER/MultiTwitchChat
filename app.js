@@ -19,7 +19,7 @@ var chatcounter = true; //Count the amount of chats
 var reconnect = true; //If the connection is closed, restart it
 
 //Bots
-var bots = ["StreamElements","Moobot"];
+var bots = ["StreamElements","Streamlabs","Moobot","Nightbot"];
 var removebots = true;
 
 function createWebSocket() {
@@ -93,6 +93,7 @@ function createWebSocket() {
             //console.log(`C: ${color} N: ${name} M: ${mod} S: ${sub} T: ${msg}`);
             //console.log(event.data.split(";").length);
             //console.log(event.data.split(";"));
+            //console.log(event.data);
 
             if (chatcounter) {
                 sentmsg = sentmsg + `[#${chatcount}]`;
@@ -112,8 +113,20 @@ function createWebSocket() {
 
             sentmsg = sentmsg + name.substring(name.search("=") + 1) + ": ";
             sentmsg = sentmsg + msg.substring(msg.search("#") + currchat.length + 3);
+            
             if (!subonly && !viponly && !modonly || subonly && sub.search("1") != -1 || viponly && badges.search("vip") != -1 || modonly && mod.substring(mod.search("=") + 1) == "1") {
-                if (color.search("#") != -1 && !disablecolors) {
+                var doContinue = true;
+                if (mod.substring(mod.search("=") + 1) == "1") {
+                    for (x of bots) {
+                        if (name.search(x)) {
+                            doContinue = false;
+                        }
+                    }
+                }
+                if (doContinue == false) {
+                    //console.log("Bot's Message");
+                    chatcount = chatcount - 1;
+                } else if (color.search("#") != -1 && !disablecolors) {
                     console.log(chalk.hex(color.substring(color.search("=") + 1))(sentmsg));
                 } else if (disablecolors) {
                     console.log(chalk.keyword(chatcolors[chatrooms.indexOf(currchat)])(sentmsg));
